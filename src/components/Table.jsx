@@ -5,6 +5,7 @@ import { ArrowDownUp } from 'lucide-react';
 import { useDispatch } from 'react-redux';
 import { _deleteEmployee } from '../store/reducers/employees';
 import NewEmployee from './NewEmployee';
+import Dialog from './Dialog';
 
 const Table = () => {
 
@@ -68,6 +69,27 @@ const Table = () => {
         }
     };
 
+    const [open, setOpen] = useState(false)
+
+    const closeDialog = () => {
+        setOpen(false);
+    }
+
+    const [dialogVal, setDialogVal] = useState({
+        mode : '',
+        title : '',
+        data : ''
+    })
+
+    const updateEmployee = (mode, title ,data) => {
+        setDialogVal({
+            mode : mode,
+            title : title,
+            data : data
+        })
+        setOpen(true);
+    }
+
 
     return (
         <>
@@ -90,15 +112,16 @@ const Table = () => {
                             <td>{employee.name}</td>
                             <td>{employee.email}</td>
                             <td>
-                                <button className='btn' 
-                                style={{
-                                    backgroundColor: '#81c784'
-                                }}>
+                                <button onClick={()=> updateEmployee('View', 'Employee Detail',employee)} className='btn'
+                                    style={{
+                                        backgroundColor: '#81c784'
+                                    }}>
                                     View
                                 </button>
                             </td>
                             <td>
-                                <button className='btn' style={{
+
+                                <button onClick={()=> updateEmployee('Update', 'Update Employee',employee)} className='btn' style={{
                                     backgroundColor: '#42a5f5'
                                 }}>
                                     Update
@@ -106,11 +129,11 @@ const Table = () => {
                             </td>
                             <td
                             >
-                                <button className='btn' 
-                                onClick={()=> dispatch(_deleteEmployee(employee.id))}
-                                style={{
-                                    backgroundColor: '#ef5350'
-                                }}>
+                                <button className='btn'
+                                    onClick={() => dispatch(_deleteEmployee(employee.id))}
+                                    style={{
+                                        backgroundColor: '#ef5350'
+                                    }}>
                                     Delete
                                 </button>
                             </td>
@@ -121,6 +144,9 @@ const Table = () => {
 
             </table>
             <NewEmployee />
+            {
+                open && <Dialog mode={dialogVal.mode} title={dialogVal.title} closeAction={closeDialog} data={dialogVal.data} onCancel={closeDialog} />
+            }
         </>
 
     )

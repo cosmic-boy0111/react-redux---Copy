@@ -1,16 +1,21 @@
-import React from 'react'
+import React, { useState } from 'react'
 
-const Dialog = ({mode,title}) => {
+import { X } from 'lucide-react';
+import EmployeeForm from './EmployeeForm';
+
+const Dialog = ({ mode, title, closeAction, data, onCancel }) => {
+
+  const [employeeData, setEmployeeData] = useState(data)
+
   return (
     <div className='dialog'>
-        <div className='form_container'>
-            <h2 style={{margin: '0'}}>{title}</h2>
+      <div className='form_container'>
+        <div className='header'>
+          <h2 >{title} </h2>
+          <X onClick={closeAction} style={{ cursor: 'pointer' }} />
         </div>
-        <form action="">
-            <div>
-                
-            </div>
-        </form>
+        <EmployeeForm  employeeData={employeeData} setEmployeeData={setEmployeeData} onCancel={onCancel} mode={mode} />
+      </div>
     </div>
   )
 }

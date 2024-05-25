@@ -8,11 +8,20 @@ export const employeesSlice = createSlice({
             return action.payload;
         },
         _addEmployee : ( state , action ) => {
-            return state.push(action.payload);
+            return [...state,action.payload];
         },
         _deleteEmployee : ( state , action ) => {
             return state.filter((p) => p.id !== action.payload)
+        },
+        _updateEmployee : ( state , action ) => {
+            return state.map(employee => {
+                if (parseInt(employee.id) === parseInt(action.payload.id)) {
+                    return action.payload;
+                }
+                return employee;
+            });
         }
+
     }
 })
 
@@ -20,7 +29,8 @@ export const employeesSlice = createSlice({
 export const { 
     _setEmployees , 
     _addEmployee , 
-    _deleteEmployee 
+    _deleteEmployee ,
+    _updateEmployee
 } = employeesSlice.actions;
 
 export default employeesSlice.reducer;
